@@ -7,7 +7,7 @@ import com.eterblue.model.pojo.Product;
 import com.eterblue.model.pojo.ShoppingCart;
 import com.eterblue.mapper.ShoppingCartMapper;
 import com.eterblue.model.vo.PageVO;
-import com.eterblue.request.PageQueryRequest;
+import com.eterblue.request.PageQCartRequest;
 import com.eterblue.request.UpdateCartRequest;
 import com.eterblue.service.IShoppingCartService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,7 +30,7 @@ import java.util.Objects;
 public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, ShoppingCart> implements IShoppingCartService {
 
     @Override
-    public PageVO<ShoppingCart> pageQueryCart(PageQueryRequest pageQueryRequest) {
+    public PageVO<ShoppingCart> pageQueryCart(PageQCartRequest pageQueryRequest) {
         Long userId = ThreadUtil.getCurrentId();
         //1.设置分页条件
         Page<ShoppingCart> page = Page.of(pageQueryRequest.getPageNumber(), pageQueryRequest.getPageSize());

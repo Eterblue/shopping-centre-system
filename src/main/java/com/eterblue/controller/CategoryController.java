@@ -9,12 +9,14 @@ import com.eterblue.request.LoginUserRequest;
 import com.eterblue.request.UpdateCategoryRequest;
 import com.eterblue.response.BaseResponse;
 import com.eterblue.service.ICategoryService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/shop/category")
+@Api(tags = "分类相关接口")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CategoryController {
 
@@ -50,7 +53,7 @@ public class CategoryController {
     }
 
     @ApiOperation("删除分类")
-    @PostMapping("/delete")
+    @PutMapping("/delete")
     public BaseResponse deleteCategory(@RequestParam Long id){
         log.info("删除分类:{}",id);
         categoryService.deleteCategory(id);
@@ -58,10 +61,11 @@ public class CategoryController {
     }
 
     @ApiOperation("更新分类数据")
-    @PostMapping("/update")
+    @PutMapping("/update")
     public BaseResponse updateCategory(@RequestBody UpdateCategoryRequest categoryRequest){
         log.info("更新分类:{}",categoryRequest);
         Category category = BeanUtil.copyProperties(categoryRequest, Category.class);
+        category.setUpdateTime(LocalDateTime.now());
         categoryService.updateById(category);
         return BaseResponse.success();
     }

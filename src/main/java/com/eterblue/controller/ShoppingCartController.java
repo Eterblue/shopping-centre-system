@@ -3,7 +3,7 @@ package com.eterblue.controller;
 
 import com.eterblue.model.pojo.ShoppingCart;
 import com.eterblue.model.vo.PageVO;
-import com.eterblue.request.PageQueryRequest;
+import com.eterblue.request.PageQCartRequest;
 import com.eterblue.request.UpdateCartRequest;
 import com.eterblue.response.BaseResponse;
 import com.eterblue.service.IShoppingCartService;
@@ -34,7 +34,7 @@ public class ShoppingCartController {
 
     @ApiOperation("分页查询购物车")
     @GetMapping("/page")
-    public BaseResponse<PageVO<ShoppingCart>> pageQueryCart(PageQueryRequest pageQueryRequest){
+    public BaseResponse<PageVO<ShoppingCart>> pageQueryCart(PageQCartRequest pageQueryRequest){
 
         log.info("查看用户购物车:{}",pageQueryRequest);
         PageVO<ShoppingCart> pageVO=shoppingCartService.pageQueryCart(pageQueryRequest);
@@ -51,7 +51,7 @@ public class ShoppingCartController {
     }
 
     @ApiOperation("更新购物车")
-    @PostMapping("/update")
+    @PutMapping("/update")
     public BaseResponse updateShoppingCart(@RequestBody UpdateCartRequest cartRequest){
 
         log.info("更新购物车:{}",cartRequest);
@@ -60,8 +60,8 @@ public class ShoppingCartController {
     }
 
     @ApiOperation("批量选中或取消")
-    @PostMapping("/listCart")
-    public BaseResponse listCart( List<Long> ids, Boolean bool){
+    @PutMapping("/listCart")
+    public BaseResponse listCart(@RequestBody List<Long> ids, Boolean bool){
 
         log.info("批量选中或取消:{}，:{}",ids,bool);
         shoppingCartService.selectCarts(ids,bool);
