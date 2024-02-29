@@ -30,7 +30,7 @@ public class Category implements Serializable {
      * 主键id
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 分类级别（1-一级分类，2-二级分类）

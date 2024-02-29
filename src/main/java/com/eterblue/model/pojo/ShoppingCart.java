@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -23,6 +25,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("shopping_cart")
+@Builder
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,7 +54,7 @@ public class ShoppingCart implements Serializable {
     /**
      * 商品id
      */
-    private Integer productId;
+    private Long productId;
 
     /**
      * 数量
@@ -67,7 +70,7 @@ public class ShoppingCart implements Serializable {
      * 0 未选中 1选中
      */
     @TableField("isSelected")
-    private String isSelected;
+    private Integer isSelected;
 
     /**
      * 0 激活 1失效

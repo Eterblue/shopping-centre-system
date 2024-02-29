@@ -8,6 +8,8 @@ class ShoppingCentreSystemApplicationTests {
 
     @Test
     void contextLoads() {
+
+
     }
 
 }

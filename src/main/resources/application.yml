@@ -3,9 +3,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Eternalblue123
-    url: jdbc:mysql://localhost:3306/sc
+    url: jdbc:mysql://localhost:3306/sc?allowMultiQueries=true
+  redis:
+    port: 6379
+    host: localhost
+    database: 2
+    auth: Eternalblue123
 mybatis-plus:
-  type-aliases-package: com.eterblue
+  type-aliases-package: com.eterblue.model
   global-config:
     db-config:
       id-type: auto

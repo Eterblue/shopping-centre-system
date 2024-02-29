@@ -9,8 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  *  Mapper 接口
  * </p>
  *
- * @author eterblue
- * @since 2024-02-28
+ *
  */
 @Mapper
 public interface OrdersMapper extends BaseMapper<Orders> {

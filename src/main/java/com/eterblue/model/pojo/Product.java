@@ -34,7 +34,7 @@ public class Product implements Serializable {
     /**
      * 商品分类id
      */
-    private Integer categoryId;
+    private Long categoryId;
 
     /**
      * 商品名称
