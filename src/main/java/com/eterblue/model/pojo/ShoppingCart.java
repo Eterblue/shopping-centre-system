@@ -69,7 +69,7 @@ public class ShoppingCart implements Serializable {
     /**
      * 0 未选中 1选中
      */
-    @TableField("isSelected")
+    @TableField(value = "isSelected")
     private Integer isSelected;
 
     /**

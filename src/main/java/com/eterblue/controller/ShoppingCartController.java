@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import java.util.List;
 public class ShoppingCartController {
     private final IShoppingCartService shoppingCartService;
 
-    private final RedisTemplate<String,Object> redisTemplate;
+
     @ApiOperation("分页查询购物车")
     @GetMapping("/page")
     public BaseResponse<PageVO<ShoppingCart>> pageQueryCart(PageQueryRequest pageQueryRequest){

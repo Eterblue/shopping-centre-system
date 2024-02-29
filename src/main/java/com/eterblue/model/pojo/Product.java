@@ -49,7 +49,7 @@ public class Product implements Serializable {
     /**
      * 销售量
      */
-    private String sales;
+    private Integer sales;
 
     /**
      * 0 停售 1起售

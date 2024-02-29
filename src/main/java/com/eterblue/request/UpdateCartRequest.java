@@ -16,4 +16,7 @@ public class UpdateCartRequest {
     private Integer status;
 
     private Long productId;
+
+    @ApiModelProperty("购物车id")
+    private Long id;
 }

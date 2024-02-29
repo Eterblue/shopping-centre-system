@@ -1,14 +1,15 @@
 package com.eterblue.model.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -22,6 +23,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("category")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,7 +44,7 @@ public class Category implements Serializable {
     /**
      * 父分类id
      */
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 分类名称
@@ -50,6 +54,7 @@ public class Category implements Serializable {
     /**
      * 排序值（字段越大越靠前）
      */
+    @TableField(value = "`rank`")
     private Integer rank;
 
     /**
@@ -68,5 +73,6 @@ public class Category implements Serializable {
      */
     private LocalDateTime updateTime;
 
-
+    @TableField(exist = false)
+    private List<Category> children;
 }

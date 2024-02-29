@@ -1,18 +1,21 @@
 package com.eterblue.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.eterblue.model.pojo.Category;
+import com.eterblue.request.AddCategoryRequest;
 import com.eterblue.request.LoginUserRequest;
+import com.eterblue.request.UpdateCategoryRequest;
 import com.eterblue.response.BaseResponse;
 import com.eterblue.service.ICategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -29,8 +32,38 @@ public class CategoryController {
 
     private final ICategoryService categoryService;
 
-    /*public BaseResponse save(){
-
+    @ApiOperation("查询出所有分类")
+    @GetMapping("/list/tree")
+    public BaseResponse<List<Category>> listWithTree(){
+        log.info("查询所有分类");
+        List<Category> list=categoryService.listWithTree();
+        return BaseResponse.success(list);
     }
-*/
+
+    @ApiOperation("增加分类")
+    @PostMapping("/add")
+    public BaseResponse addCategory(@RequestBody AddCategoryRequest categoryRequest){
+        log.info("增加分类:{}",categoryRequest);
+        categoryService.saveCategory(categoryRequest);
+
+        return BaseResponse.success();
+    }
+
+    @ApiOperation("删除分类")
+    @PostMapping("/delete")
+    public BaseResponse deleteCategory(@RequestParam Long id){
+        log.info("删除分类:{}",id);
+        categoryService.deleteCategory(id);
+        return BaseResponse.success();
+    }
+
+    @ApiOperation("更新分类数据")
+    @PostMapping("/update")
+    public BaseResponse updateCategory(@RequestBody UpdateCategoryRequest categoryRequest){
+        log.info("更新分类:{}",categoryRequest);
+        Category category = BeanUtil.copyProperties(categoryRequest, Category.class);
+        categoryService.updateById(category);
+        return BaseResponse.success();
+    }
+
 }

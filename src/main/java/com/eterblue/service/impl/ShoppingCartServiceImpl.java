@@ -62,7 +62,7 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
     public void addShoppingCart(Long productId) {
         Long userId = ThreadUtil.getCurrentId();
         //查询出的购物车信息
-        ShoppingCart cart = queryCart(productId,userId);
+        ShoppingCart cart = baseMapper.queryCartByPdAndUd(productId,userId);
 
         if(cart==null){
             //新增购物车
@@ -90,10 +90,11 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
 
     @Override
     public void updateShoppingCart(UpdateCartRequest cartRequest) {
-        Long productId = cartRequest.getProductId();
-        Long userId = ThreadUtil.getCurrentId();
+        /*Long productId = cartRequest.getProductId();
+        Long userId = ThreadUtil.getCurrentId();*/
+        Long id=cartRequest.getId();
         //1.获取购物车
-        ShoppingCart cart = queryCart(productId, userId);
+        ShoppingCart cart = getById(id);
         //2.1.购物车商品增减功能
         Integer plusOrMinus = cartRequest.getQuantity();
         Integer quantity=cart.getQuantity();
@@ -121,7 +122,6 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
             updateById(cart);
         }
         else {
-
             //未选中
             cart.setIsSelected(0);
             updateById(cart);
@@ -154,17 +154,5 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
         List<ShoppingCart> shoppingCarts = listByIds(ids);
         shoppingCarts.forEach(shoppingCart -> shoppingCart.setStatus(status));
         updateBatchById(shoppingCarts);
-    }
-
-
-    /**
-     * 查询购物车项
-     * @param productId
-     * @param userId
-     * @return
-     */
-    private ShoppingCart queryCart(Long productId,Long userId){
-
-        return baseMapper.queryCartByPdAndUd(productId,userId);
     }
 }

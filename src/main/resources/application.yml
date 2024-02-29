@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Eternalblue123
-    url: jdbc:mysql://localhost:3306/sc?allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/sc
   redis:
     port: 6379
     host: localhost
@@ -15,9 +15,9 @@ mybatis-plus:
     db-config:
       id-type: auto
       update-strategy: not_null
-      logic-not-delete-value: 1
-      logic-delete-field: status
-      logic-delete-value: 0
+#      logic-not-delete-value: 1
+#      logic-delete-field: status
+#      logic-delete-value: 0
   mapper-locations: "classpath*:/mapper/**/*.xml"
   configuration:
     map-underscore-to-camel-case: true
