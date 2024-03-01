@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eterblue.mapper.OrderDetailMapper">
 
+    <insert id="insertBatch">
+        INSERT INTO order_detail (id,name, image, order_id, product_id, amount, quantity) VALUES
+        <foreach collection="detailList" separator="," item="dl">
+            (#{dl.id},#{dl.name},#{dl.image},#{dl.orderId},#{dl.productId},#{dl.amount},#{dl.quantity})
+        </foreach>
+    </insert>
 </mapper>
