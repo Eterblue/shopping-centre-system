@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class ProductController {
 
     @ApiOperation("增加商品")
     @PostMapping("/add")
-    public BaseResponse addProduct(@RequestBody AddProductRequest productRequest){
+    public BaseResponse addProduct(@RequestBody @Valid AddProductRequest productRequest){
         log.info("增加商品:{}",productRequest);
         productService.saveProduct(productRequest);
         cleanCache("page_*");
@@ -63,7 +64,7 @@ public class ProductController {
 
     @ApiOperation("更改商品信息")
     @PutMapping("/update")
-    public BaseResponse updateProduct(@RequestBody AddProductRequest productRequest){
+    public BaseResponse updateProduct(@RequestBody @Valid AddProductRequest productRequest){
         log.info("更改商品信息：{}",productRequest);
         Product product = BeanUtil.copyProperties(productRequest, Product.class);
         productService.updateById(product);
@@ -110,6 +111,5 @@ public class ProductController {
     private void cleanCache(String pattern){
         Set keys = redisTemplate.keys(pattern);
         redisTemplate.delete(keys);
-
     }
 }

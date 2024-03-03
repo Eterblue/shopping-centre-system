@@ -2,6 +2,7 @@ package com.eterblue.exception;
 
 import com.eterblue.response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,7 +19,6 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler
     public BaseResponse exceptionHandler(SQLIntegrityConstraintViolationException ex){
-        //Duplicate entry 'saber' for key 'employee.idx_username'
         String message = ex.getMessage();
         String[] username = message.split(" ");
         if(message.contains("Duplicate")){
@@ -26,5 +26,10 @@ public class GlobalExceptionHandler {
             return BaseResponse.error(msg);
         }
         return BaseResponse.error("未知错误");
+    }
+    @ExceptionHandler(value = { MethodArgumentNotValidException.class})
+    public BaseResponse methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        log.error("------->MethodArgumentNotValidException参数异常-------- ", e);
+        return BaseResponse.error(e.getBindingResult().getFieldError().getDefaultMessage());
     }
 }

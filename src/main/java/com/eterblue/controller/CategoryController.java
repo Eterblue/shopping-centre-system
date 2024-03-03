@@ -2,10 +2,8 @@ package com.eterblue.controller;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.eterblue.model.pojo.Category;
 import com.eterblue.request.AddCategoryRequest;
-import com.eterblue.request.LoginUserRequest;
 import com.eterblue.request.UpdateCategoryRequest;
 import com.eterblue.response.BaseResponse;
 import com.eterblue.service.ICategoryService;
@@ -15,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class CategoryController {
 
     @ApiOperation("增加分类")
     @PostMapping("/add")
-    public BaseResponse addCategory(@RequestBody AddCategoryRequest categoryRequest){
+    public BaseResponse addCategory(@RequestBody @Valid AddCategoryRequest categoryRequest){
         log.info("增加分类:{}",categoryRequest);
         categoryService.saveCategory(categoryRequest);
 

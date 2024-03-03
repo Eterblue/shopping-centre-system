@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  *  前端控制器
@@ -35,7 +37,7 @@ public class OrdersController {
 
     @ApiOperation("新增订单")
     @PostMapping("/add")
-    public BaseResponse<OrdersVO> addOrders(@RequestBody AddOrdersRequest ordersRequest){
+    public BaseResponse<OrdersVO> addOrders(@RequestBody @Valid AddOrdersRequest ordersRequest){
 
 
         log.info("新增订单:{}",ordersRequest);

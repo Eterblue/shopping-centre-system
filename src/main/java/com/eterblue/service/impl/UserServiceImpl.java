@@ -7,7 +7,9 @@ import com.eterblue.request.LoginUserRequest;
 import com.eterblue.request.UpdateUserRequest;
 import com.eterblue.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.eterblue.util.ThreadUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,17 +53,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
+    @Transactional
     public void updateUser(UpdateUserRequest updateUserRequest) {
 
         User user = BeanUtil.copyProperties(updateUserRequest, User.class);
-
+        Long userId = ThreadUtil.getCurrentId();
+        String phone = user.getPhone();
+        String password = user.getPassword();
+        //1.更改手机号
+        if(!phone.isEmpty()){
+            //根据手机号查询
+            User user1 = lambdaQuery().eq(User::getPhone, phone).list().get(0);
+            //查询到用户，并且用户id不等抛出异常
+            if(user1!=null && !user1.getId().equals(userId)) throw new RuntimeException("该手机号已被注册");
+        }
+        //2.更改密码
+        if(!password.isEmpty()){
+            password = DigestUtils.md5DigestAsHex(password.getBytes());
+        }
         lambdaUpdate()
-                .set(user.getName() !=null,User::getName,user.getName())
-                .set(user.getPassword() !=null,User::getPassword,user.getPassword())
-                .set(user.getPhone() !=null,User::getPhone,user.getPhone())
-                .set(user.getGender() !=null,User::getGender,user.getGender())
+                .set(!user.getName().isEmpty(),User::getName,user.getName())
+                .set(!password.isEmpty(),User::getPassword, password)
+                .set(!phone.isEmpty(),User::getPhone, phone)
+                .set(user.getGender()!=null,User::getGender,user.getGender())
                 .set(User::getUpdateTime,LocalDateTime.now())
-                .eq(User::getId,user.getId())
+                .eq(User::getId,userId)
                 .update();
     }
 }

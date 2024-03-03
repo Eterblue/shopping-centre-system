@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class UserController {
 
     @ApiOperation("登录注册接口")
     @PostMapping("/login")
-    public BaseResponse<LoginUserVO> login(@RequestBody LoginUserRequest loginUserRequest){
+    public BaseResponse<LoginUserVO> login(@RequestBody @Valid LoginUserRequest loginUserRequest){
 
         log.info("用户登录请求:{}",loginUserRequest);
         User user = userService.loginUser(loginUserRequest);

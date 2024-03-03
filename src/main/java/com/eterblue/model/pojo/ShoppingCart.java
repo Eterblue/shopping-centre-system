@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 
@@ -33,6 +35,7 @@ public class ShoppingCart implements Serializable {
     /**
      * 主键id
      */
+    @NotNull(message = "商品id不能为空")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

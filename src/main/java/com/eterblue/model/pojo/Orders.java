@@ -9,6 +9,9 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -44,6 +47,7 @@ public class Orders implements Serializable {
     /**
      * 1普通配送 2快递配送 3及时配送 4同城配送
      */
+
     private Integer deliveryMethod;
 
     /**

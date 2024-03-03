@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class ShoppingCartController {
 
     @ApiOperation("更新购物车")
     @PutMapping("/update")
-    public BaseResponse updateShoppingCart(@RequestBody UpdateCartRequest cartRequest){
+    public BaseResponse updateShoppingCart(@RequestBody @Valid UpdateCartRequest cartRequest){
 
         log.info("更新购物车:{}",cartRequest);
         shoppingCartService.updateShoppingCart(cartRequest);

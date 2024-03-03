@@ -35,6 +35,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         product.setUpdateTime(LocalDateTime.now());
         product.setStatus(1);
         product.setSales(0);
+        product.setId(null);
         save(product);
     }
 
