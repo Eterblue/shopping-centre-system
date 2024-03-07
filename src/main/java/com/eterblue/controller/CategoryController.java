@@ -50,11 +50,11 @@ public class CategoryController {
         return BaseResponse.success();
     }
 
-    @ApiOperation("删除分类")
-    @PutMapping("/delete")
-    public BaseResponse deleteCategory(@RequestParam Long id){
-        log.info("删除分类:{}",id);
-        categoryService.deleteCategory(id);
+    @ApiOperation("显示、不显示分类")
+    @PostMapping ("/status/{status}")
+    public BaseResponse statusCategory(@PathVariable Integer status, Long id){
+        log.info("分类id:{}，状态:{}",id,status);
+        categoryService.statusCategory(id,status);
         return BaseResponse.success();
     }
 
@@ -68,4 +68,11 @@ public class CategoryController {
         return BaseResponse.success();
     }
 
+    @DeleteMapping("/delete")
+    @ApiOperation("删除分类")
+    public BaseResponse deleteCategory(@RequestBody List<Long> ids){
+        log.info("删除分类:{}",ids);
+        categoryService.deleteCategory(ids);
+        return BaseResponse.success();
+    }
 }

@@ -152,7 +152,7 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
     public void selectCarts(List<Long> ids, Boolean bool) {
         Integer status=bool?1:0;
         List<ShoppingCart> shoppingCarts = listByIds(ids);
-        shoppingCarts.forEach(shoppingCart -> shoppingCart.setStatus(status));
-        updateBatchById(shoppingCarts);
+        List<ShoppingCart> list = shoppingCarts.stream().filter(shoppingCart -> shoppingCart.getUserId().equals(ThreadUtil.getCurrentId())).map(shoppingCart -> shoppingCart.setIsSelected(status)).toList();
+        updateBatchById(list);
     }
 }

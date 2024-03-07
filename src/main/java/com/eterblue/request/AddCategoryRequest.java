@@ -14,7 +14,7 @@ public class AddCategoryRequest {
     @Range(min = 1,max = 2,message = "层级只能为1或2")
     private Integer level;
 
-    @Range(min = 1,message = "父分类id不符要求")
+    @Range(min = 0,message = "父分类id不符要求")
     private Long parentId;
 
     @NotNull(message = "分类名称不为空")

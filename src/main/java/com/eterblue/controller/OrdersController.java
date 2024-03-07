@@ -35,7 +35,7 @@ public class OrdersController {
 
     private final IOrdersService ordersService;
 
-    @ApiOperation("新增订单")
+    @ApiOperation("新增订单//批量下单")
     @PostMapping("/add")
     public BaseResponse<OrdersVO> addOrders(@RequestBody @Valid AddOrdersRequest ordersRequest){
 

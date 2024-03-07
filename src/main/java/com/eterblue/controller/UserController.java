@@ -60,7 +60,7 @@ public class UserController {
 
     @ApiOperation("更新用户信息")
     @PutMapping("/update")
-    public BaseResponse update(@RequestBody UpdateUserRequest updateUserRequest){
+    public BaseResponse update(@RequestBody @Valid UpdateUserRequest updateUserRequest){
 
         userService.updateUser(updateUserRequest);
         return BaseResponse.success();

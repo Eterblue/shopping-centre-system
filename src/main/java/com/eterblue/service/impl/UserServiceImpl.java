@@ -1,6 +1,7 @@
 package com.eterblue.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.eterblue.exception.BaseException;
 import com.eterblue.model.pojo.User;
 import com.eterblue.mapper.UserMapper;
 import com.eterblue.request.LoginUserRequest;
@@ -61,11 +62,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String phone = user.getPhone();
         String password = user.getPassword();
         //1.更改手机号
-        if(!phone.isEmpty()){
-            //根据手机号查询
-            User user1 = lambdaQuery().eq(User::getPhone, phone).list().get(0);
-            //查询到用户，并且用户id不等抛出异常
-            if(user1!=null && !user1.getId().equals(userId)) throw new RuntimeException("该手机号已被注册");
+
+        //根据手机号查询
+        List<User> user1 = lambdaQuery().eq(User::getPhone, phone).list();
+        //查询到用户，并且用户id不等抛出异常
+        if(!user1.isEmpty()){
+            if(!user1.get(0).getId().equals(userId)){
+                throw new BaseException("该手机号已被注册");
+            }
         }
         //2.更改密码
         if(!password.isEmpty()){

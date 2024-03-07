@@ -2,6 +2,7 @@ package com.eterblue.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
+import com.eterblue.exception.BaseException;
 import com.eterblue.mapper.OrderDetailMapper;
 import com.eterblue.mapper.ShoppingCartMapper;
 import com.eterblue.model.pojo.OrderDetail;
@@ -45,10 +46,10 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         List<ShoppingCart> list = Db.lambdaQuery(ShoppingCart.class)
                 .eq(ShoppingCart::getUserId, userId).eq(ShoppingCart::getIsSelected, 1).list();
         if(list.isEmpty()){
-            throw new RuntimeException("购物车为空，下单失败");
+            throw new BaseException("购物车为空，下单失败");
         }
         if(orders.getAddress()==null){
-            throw new RuntimeException("配送地址为空，下单失败");
+            throw new BaseException("配送地址为空，下单失败");
         }
         //2.1添加订单
         BigDecimal amount= BigDecimal.valueOf(0);

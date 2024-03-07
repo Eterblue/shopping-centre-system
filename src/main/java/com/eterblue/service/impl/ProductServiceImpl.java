@@ -1,6 +1,9 @@
 package com.eterblue.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.comparator.ComparableComparator;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eterblue.model.pojo.Product;
@@ -11,10 +14,15 @@ import com.eterblue.request.AddProductRequest;
 import com.eterblue.request.PageProductRequest;
 import com.eterblue.service.IProductService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,9 +33,12 @@ import java.util.Objects;
  *
  */
 @Service
-
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements IProductService {
 
+    private final RedisTemplate redisTemplate;
+
+    private static final String key="Product::list";
     @Override
     public void saveProduct(AddProductRequest productRequest) {
         Product product= BeanUtil.copyProperties(productRequest, Product.class);
@@ -42,7 +53,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     public PageVO<Product> pageQuery(PageProductRequest productRequest) {
 
-        //1.设置分页条件
+        /*//1.设置分页条件
         Page<Product> page = Page.of(productRequest.getPageNumber(), productRequest.getPageSize());
         OrderItem orderItem=new OrderItem();
         String sortBy = productRequest.getSortBy();
@@ -66,7 +77,40 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return pageVO;
         }
         pageVO.setList(p.getRecords());
-        return pageVO;
+        return pageVO;*/
 
+        Long categoryId = productRequest.getCategoryId();
+        Integer pageNumber = productRequest.getPageNumber();
+        Integer pageSize = productRequest.getPageSize();
+
+        List<Product> list = productList();
+        //查询符合条件的商品
+        List<Product> products = list.stream()
+                .sorted()
+                .filter(product -> categoryId == null || product.getCategoryId().equals(product.getCategoryId()))
+                .skip((long) pageSize * (pageNumber - 1))
+                .toList();
+        PageVO<Product> pageVO=new PageVO<>();
+        pageVO.setTotal((long) products.size());
+        pageVO.setPages(Math.ceil());
+
+        return null;
+    }
+
+
+    //从数据库或redis中获得list集合
+    private List<Product> productList(){
+        List<Product> list = Convert.convert(new TypeReference<List<Product>>() {
+        }, redisTemplate.opsForValue().get(key));
+
+        if(list.isEmpty()){
+            synchronized (ProductServiceImpl.class){
+                if (!list.isEmpty()) return list;
+                list = lambdaQuery().eq(Product::getStatus, 1).list();
+                redisTemplate.opsForValue().set(list,key);
+            }
+
+        }
+        return list;
     }
 }

@@ -3,8 +3,6 @@ package com.eterblue.service;
 import com.eterblue.model.pojo.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eterblue.request.AddCategoryRequest;
-import com.eterblue.request.LoginUserRequest;
-import com.eterblue.request.UpdateCategoryRequest;
 
 import java.util.List;
 
@@ -21,7 +19,8 @@ public interface ICategoryService extends IService<Category> {
 
     void saveCategory(AddCategoryRequest categoryRequest);
 
-    void deleteCategory(Long id);
+    void statusCategory(Long id, Integer status);
 
 
+    void deleteCategory(List<Long> ids);
 }

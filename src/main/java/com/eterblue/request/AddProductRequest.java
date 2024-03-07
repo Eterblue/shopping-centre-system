@@ -14,6 +14,9 @@ import java.math.BigDecimal;
 public class AddProductRequest {
 
     @Range(min = 1,message = "商品id最小为1")
+    private Long id;
+
+    @Range(min = 1,message = "分类id最小为1")
     private Long categoryId;
 
     @NotNull(message = "商品名字不为空")
