@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @ApiModel("分页查询购物车")
-public class PageQCartRequest {
+public class PageCartRequest {
 
     private Integer pageNumber=1;
 

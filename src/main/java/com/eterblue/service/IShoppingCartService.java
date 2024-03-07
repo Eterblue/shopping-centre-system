@@ -3,7 +3,7 @@ package com.eterblue.service;
 import com.eterblue.model.pojo.ShoppingCart;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eterblue.model.vo.PageVO;
-import com.eterblue.request.PageQCartRequest;
+import com.eterblue.request.PageCartRequest;
 import com.eterblue.request.UpdateCartRequest;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface IShoppingCartService extends IService<ShoppingCart> {
 
-    PageVO<ShoppingCart> pageQueryCart(PageQCartRequest pageQueryRequest);
+    PageVO<ShoppingCart> pageQueryCart(PageCartRequest pageQueryRequest);
 
     void addShoppingCart(Long productId);
 

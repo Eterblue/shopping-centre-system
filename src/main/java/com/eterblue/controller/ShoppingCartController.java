@@ -3,7 +3,7 @@ package com.eterblue.controller;
 
 import com.eterblue.model.pojo.ShoppingCart;
 import com.eterblue.model.vo.PageVO;
-import com.eterblue.request.PageQCartRequest;
+import com.eterblue.request.PageCartRequest;
 import com.eterblue.request.UpdateCartRequest;
 import com.eterblue.response.BaseResponse;
 import com.eterblue.service.IShoppingCartService;
@@ -35,7 +35,7 @@ public class ShoppingCartController {
 
     @ApiOperation("分页查询购物车")
     @GetMapping("/page")
-    public BaseResponse<PageVO<ShoppingCart>> pageQueryCart(PageQCartRequest pageQueryRequest){
+    public BaseResponse<PageVO<ShoppingCart>> pageQueryCart(PageCartRequest pageQueryRequest){
 
         log.info("查看用户购物车:{}",pageQueryRequest);
         PageVO<ShoppingCart> pageVO=shoppingCartService.pageQueryCart(pageQueryRequest);
