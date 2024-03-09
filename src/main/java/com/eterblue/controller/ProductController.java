@@ -90,7 +90,15 @@ public class ProductController {
 
         log.info("分页查询:{}",productRequest);
 
-        PageVO<Product> pageVO = productService.pageQuery(productRequest);
+        //设置动态分类id
+        String key="page_"+productRequest.toString();
+        //从redis根据key中获取
+        PageVO<Product> pageVO = (PageVO<Product>) redisTemplate.opsForValue().get(key);
+
+        if(pageVO==null){
+            pageVO=productService.pageQuery(productRequest);
+            redisTemplate.opsForValue().set(key,pageVO);
+        }
         return BaseResponse.success(pageVO);
     }
 

@@ -53,9 +53,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     public PageVO<Product> pageQuery(PageProductRequest productRequest) {
 
-        /*//1.设置分页条件
+        //1.设置分页条件
         Page<Product> page = Page.of(productRequest.getPageNumber(), productRequest.getPageSize());
-        OrderItem orderItem=new OrderItem();
+        OrderItem orderItem = new OrderItem();
         String sortBy = productRequest.getSortBy();
         orderItem.setColumn(Objects.requireNonNullElse(sortBy, "create_time"));
         orderItem.setAsc(productRequest.getAsc());
@@ -64,56 +64,19 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         //2.查询符合条件的商品
         Page<Product> p = lambdaQuery()
                 //根据分类id查询
-                .eq(productRequest.getCategoryId()!=null,Product::getCategoryId,productRequest.getCategoryId())
-                .like(productRequest.getName()!=null,Product::getName,productRequest.getName())
+                .eq(productRequest.getCategoryId() != null, Product::getCategoryId, productRequest.getCategoryId())
+                .like(productRequest.getName() != null, Product::getName, productRequest.getName())
                 .page(page);
 
         //3.封装VO
-        PageVO<Product> pageVO=new PageVO<>();
+        PageVO<Product> pageVO = new PageVO<>();
         pageVO.setPages(p.getPages());
         pageVO.setTotal(p.getTotal());
-        if(p.getRecords()==null){
+        if (p.getRecords() == null) {
             pageVO.setList(Collections.emptyList());
             return pageVO;
         }
         pageVO.setList(p.getRecords());
-        return pageVO;*/
-
-
-        Long categoryId = productRequest.getCategoryId();
-        Integer pageNumber = productRequest.getPageNumber();
-        Integer pageSize = productRequest.getPageSize();
-
-        List<Product> list = productList(productRequest.getSortBy(),productRequest.getAsc());
-        //查询符合条件的商品
-        List<Product> products = list.stream()
-                .filter(product -> categoryId == null || (product.getCategoryId().equals(categoryId)))
-                .skip((long) pageSize * (pageNumber - 1))
-                .limit(pageSize)
-                .toList();
-        PageVO<Product> pageVO=new PageVO<>();
-        pageVO.setTotal((long) products.size());
-        pageVO.setPages((long) Math.ceil((double) products.size() /pageSize));
-        pageVO.setList(products);
         return pageVO;
-    }
-
-
-    //从数据库或redis中获得list集合
-    private List<Product> productList(String sortBy,Boolean asc){
-
-        String key="Product::list"+sortBy+asc;
-        List<Product> list = Convert.convert(new TypeReference<List<Product>>() {
-        }, redisTemplate.opsForValue().get(key));
-
-        if(list==null){
-            synchronized (ProductServiceImpl.class){
-                if (list!=null) return list;
-                list = lambdaQuery().eq(Product::getStatus, 1).orderByAsc(sortBy==null,Product::getCreateTime).orderBy(sortBy!=null,asc,"price".equals(sortBy) ?(Product::getPrice):(Product::getSales)).list();
-                redisTemplate.opsForValue().set(key,list);
-            }
-
-        }
-        return list;
     }
 }
