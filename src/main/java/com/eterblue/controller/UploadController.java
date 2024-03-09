@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
-@RequestMapping("/oss")
+@RequestMapping("/shop/oss")
 @RestController
 @Slf4j
 @Api(tags = "文件上传")
